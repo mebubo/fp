@@ -27,16 +27,15 @@ object Parser {
   }
 
   def items(channel: NodeSeq): E[List[Item]] = {
-    val items = channel \\ "item"
-    val is: List[E[Item]] = items.map { i =>
+    val is: NodeSeq = channel \\ "item"
+    is.toList.traverse[E, Item] { i =>
       val title: E[String] = (i \\ "title").headOption.toRight("No episode title").map(_.text)
       val url: E[URL] = (i \\ "enclosure").headOption.flatMap(x => x.attributes.asAttrMap.get("url")).map(URL).toRight("No episode url")
       for {
         t <- title
         u <- url
       } yield Item(t, u)
-    }.toList
-    is.sequence[E, Item]
+    }
   }
 
   def main(args: Array[String]): Unit = {
