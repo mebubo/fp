@@ -12,8 +12,8 @@ object Parser {
 
   type E[A] = Either[String, A]
 
-  def item2episode(p: Podcast, i: Item): Episode =
-    Episode(0, p.id, i.enclosureUrl, done = false)
+  def item2episode(p: DBPodcast, i: Item): Episode =
+    Episode(p.id, i.enclosureUrl, done = false)
 
   def parse(s: String): E[Feed] = for {
     el <- Try(XML.loadString(s)).toEither.left.map(e => e.getMessage)

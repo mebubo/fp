@@ -15,7 +15,7 @@ object FileReader {
 object ConfigReader {
   def configToPodcast(l: String): Podcast = {
     val name :: url :: _ = l.split(" ").toList
-    Podcast(0, name, URL(url))
+    Podcast(name, URL(url))
   }
 }
 

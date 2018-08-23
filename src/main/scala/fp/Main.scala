@@ -7,7 +7,7 @@ import fp.logic.DownloadPodcasts
 
 object Main {
 
-  def mainIO(args: Array[String])(DP: DownloadPodcasts[IO]): IO[List[Podcast]] = for {
+  def mainIO(args: Array[String])(DP: DownloadPodcasts[IO]): IO[List[DBPodcast]] = for {
     _ <- DP.init
     ps <- DP.addNewPodcasts
     _ <- IO { println(ps) }

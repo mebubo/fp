@@ -1,12 +1,12 @@
 package fp.algebra
 
-import fp.{Episode, Podcast}
+import fp.{DBEpisode, DBPodcast, Episode, Podcast}
 
 trait DB[F[_]] {
   def createTables: F[Unit]
-  def getPodcasts: F[List[Podcast]]
-  def getEpisodes(p: Podcast): F[List[Episode]]
-  def addPodcast(p: Podcast): F[Podcast]
-  def addEpisode(e: Episode): F[Episode]
-  def markDone(e: Episode): F[Episode]
+  def getPodcasts: F[List[DBPodcast]]
+  def getEpisodes(p: DBPodcast): F[List[DBEpisode]]
+  def addPodcast(p: Podcast): F[DBPodcast]
+  def addEpisode(e: Episode): F[DBEpisode]
+  def markDone(e: DBEpisode): F[DBEpisode]
 }
