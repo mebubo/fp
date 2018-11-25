@@ -1,6 +1,6 @@
 package fp.algebra
 
-import fp.{Binary, Episode, Podcast}
+import fp.model.{Binary, Episode, Podcast}
 
 trait HTTP[F[_]] {
   def getEpisodes(podcast: Podcast): F[List[Episode]]

@@ -2,7 +2,7 @@ package fp.logic
 
 import cats._
 import cats.implicits._
-import fp.{DBPodcast, Episode, Podcast}
+import fp.model.{DBPodcast, Episode, Podcast}
 import fp.algebra.{Config, DB, HTTP, Storage}
 
 class DownloadPodcasts[F[_]: Monad](C: Config[F], D: DB[F]/*, H: HTTP[F], S: Storage[F]*/) {

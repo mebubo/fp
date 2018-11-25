@@ -1,4 +1,4 @@
-package fp.db
+package fp.sql
 
 object Constants {
   object Tables {

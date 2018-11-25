@@ -1,6 +1,6 @@
 package fp.algebra
 
-import fp.{DBEpisode, DBPodcast, Episode, Podcast}
+import fp.model.{DBEpisode, DBPodcast, Episode, Podcast}
 
 trait DB[F[_]] {
   def createTables: F[Unit]

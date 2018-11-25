@@ -4,6 +4,7 @@ import scala.io.Source
 import scala.util.Try
 import scala.xml.{NodeSeq, XML}
 import cats.implicits._
+import fp.model.{DBPodcast, Episode, URL}
 
 case class Item(title: String, enclosureUrl: URL)
 case class Feed(title: String, items: List[Item])

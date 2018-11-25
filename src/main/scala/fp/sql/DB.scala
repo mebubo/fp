@@ -1,4 +1,4 @@
-package fp.db
+package fp.sql
 
 import cats.effect.IO
 import cats.syntax.applicative._
@@ -6,12 +6,10 @@ import doobie.implicits._
 import doobie.hi.{FDMD, HC, HRS}
 import doobie.free.connection.ConnectionIO
 import doobie.util.transactor.Transactor
-import fp.db.Constants.Tables.{Episodes, Podcasts}
-import fp.{DBEpisode, DBPodcast, Episode, Podcast}
+import fp.sql.Constants.Tables.{Episodes, Podcasts}
+import fp.model.{DBEpisode, DBPodcast, Episode, Podcast}
 
 object DB {
-
-  val xa: Transactor[IO] = Transactor.fromDriverManager[IO]("org.sqlite.JDBC", "jdbc:sqlite:./fp.db")
 
   def getTables: ConnectionIO[List[String]] = HC.getMetaData(
     FDMD.getTables("", "", "", null)
@@ -43,8 +41,6 @@ object DB {
     _ <- createPodcastsTable.unlessA(tables.contains(Podcasts))
     _ <- createEpisodesTable.unlessA(tables.contains(Episodes))
   } yield ()
-
-  def transact[A](c: ConnectionIO[A]): IO[A] = c.transact(xa)
 
   def addPodcast(p: Podcast): ConnectionIO[DBPodcast] = for {
     _ <- sql"insert or ignore into podcasts (name, url) values (${p.name}, ${p.url})".update.run
