@@ -1,7 +1,7 @@
 scalaVersion := "2.12.7"
 
-val doobieVersion = "0.5.3"
-val http4sVersion = "0.18.16"
+val doobieVersion = "0.6.0"
+val http4sVersion = "0.20.0-M3"
 
 scalacOptions ++= Seq("-Ypartial-unification")
 
