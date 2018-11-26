@@ -14,7 +14,7 @@ class DownloadPodcasts[F[_]: Monad](C: Config[F], D: DB[F]/*, H: HTTP[F], S: Sto
     for {
       pc <- C.read
       pdb <- D.getPodcasts
-    } yield pc.filterNot(pdb.map(_.toPodcast).toSet)
+    } yield pc.filterNot(pdb.map(_.podcast).toSet)
   }
 
   def addNewPodcasts: F[List[DBPodcast]] = {

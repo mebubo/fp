@@ -4,7 +4,7 @@ import scala.io.Source
 import scala.util.Try
 import scala.xml.{NodeSeq, XML}
 import cats.implicits._
-import fp.model.{DBPodcast, Episode, URL}
+import fp.model.{DBPodcast, Episode, Id, URL}
 
 case class Item(title: String, enclosureUrl: URL)
 case class Feed(title: String, items: List[Item])
@@ -13,7 +13,7 @@ object Parser {
 
   type E[A] = Either[String, A]
 
-  def item2episode(p: DBPodcast, i: Item): Episode =
+  def item2episode(p: DBPodcast, i: Item): Episode[Id] =
     Episode(p.id, i.enclosureUrl, done = false)
 
   def parse(s: String): E[Feed] = for {

@@ -7,7 +7,7 @@ import doobie.hi.{FDMD, HC, HRS}
 import doobie.free.connection.ConnectionIO
 import doobie.util.transactor.Transactor
 import fp.sql.Constants.Tables.{Episodes, Podcasts}
-import fp.model.{DBEpisode, DBPodcast, Episode, Podcast}
+import fp.model._
 
 object DB {
 
@@ -47,22 +47,22 @@ object DB {
     p <- sql"select id, name, url from podcasts where name = ${p.name}".query[DBPodcast].unique
   } yield p
 
-  def addEpisode(e: Episode): ConnectionIO[DBEpisode] = for {
-    _ <- sql"insert or ignore into episodes (podcastid, url, done) values (${e.podcastId}, ${e.url}, ${e.done}".update.run
-    e <- sql"select id, podcastid, name, url from episodes where url = ${e.url}".query[DBEpisode].unique
+  def addEpisode(e: Episode[Id]): ConnectionIO[DBEpisode[Id]] = for {
+    _ <- sql"insert or ignore into episodes (podcastid, url, done) values (${e.podcast}, ${e.url}, ${e.done}".update.run
+    e <- sql"select id, podcastid, name, url from episodes where url = ${e.url}".query[DBEpisode[Id]].unique
   } yield e
 
   def getPodcasts: ConnectionIO[List[DBPodcast]] =
     sql"""select * from podcasts""".query[DBPodcast].to[List]
 
-  def getEpisodes(p: DBPodcast): ConnectionIO[List[DBEpisode]] =
-    sql"""select * from episodes where podcastid = ${p.id}""".query[DBEpisode].to[List]
+  def getEpisodes(p: DBPodcast): ConnectionIO[List[DBEpisode[Id]]] =
+    sql"""select * from episodes where podcastid = ${p.id}""".query[DBEpisode[Id]].to[List]
 
 
-  def markDone(e: DBEpisode): ConnectionIO[DBEpisode] = for {
+  def markDone(e: DBEpisode[Id]): ConnectionIO[DBEpisode[Id]] = for {
     _ <- sql"update episodes set done = true where id = ${e.id}".update.run
     id <- sql"select lastval()".query[Long].unique
-    e <- sql"select * from episodes where id = ${id}".query[DBEpisode].unique
+    e <- sql"select * from episodes where id = ${id}".query[DBEpisode[Id]].unique
   } yield e
 
 }

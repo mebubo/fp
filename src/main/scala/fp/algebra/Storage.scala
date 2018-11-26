@@ -1,7 +1,7 @@
 package fp.algebra
 
-import fp.model.{Binary, Episode}
+import fp.model.{Binary, Episode, Podcast}
 
 trait Storage[F[_]] {
-  def write(e: Episode, data: Binary): F[Unit]
+  def write(e: Episode[Podcast], data: Binary): F[Unit]
 }
